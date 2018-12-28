@@ -4,16 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+
+// Passport
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy; // to use username and password for authentication
 
 // Mongoose
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
-
-// Models
-var User = require('./models/user');
 
 // Routes
 var indexRouter = require('./routes/index');
@@ -21,28 +20,28 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-// db connection
+// Db connection
 mongoose.connect('mongodb://localhost/addy', { useNewUrlParser: true })
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 
-// Initialize express session and passport
+// Express session config
 app.use(require('express-session')({
   secret: 'keyboard cat', // to hash session data
   cookie: {maxAge: 86400000},
   resave: false,
   saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Passport config
-passport.use(new LocalStrategy(User.authenticate()));
+app.use(passport.initialize());
+app.use(passport.session());
+const User = require('./models/user');
+passport.use(new LocalStrategy(User.authenticate())); // reason why we require User above
 passport.serializeUser(function (user, done) {
   // Store the user in session for retrieval
   done(null, user);
 });
-
 passport.deserializeUser(function (user, done) {
   // to retrieve user based on user stored above
   done(null, user);

@@ -16,10 +16,10 @@ userController.register = function(req, res) {
 
 // Post registration
 userController.doRegister = function(req, res) {
-    req.body.
   User.register(new User({ username : req.body.username, name: req.body.name }), req.body.password, function(err, user) {
     if (err) {
-      return res.render('register', { user : user });
+    //   return res.render('register', { user : user });
+        return res.render("register", {info: "Username already exists or is not an email. Please try again."});
     }
 
     passport.authenticate('local')(req, res, function () {
@@ -35,9 +35,14 @@ userController.login = function(req, res) {
 
 // Post login
 userController.doLogin = function(req, res) {
-  passport.authenticate('local')(req, res, function () {
-    res.redirect('/');
-  });
+//   passport.authenticate('local')(req, res, function () {
+//     res.redirect('/');
+//   });
+    passport.authenticate('local', { 
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true 
+    })
 };
 
 // logout
