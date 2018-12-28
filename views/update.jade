@@ -1,0 +1,47 @@
+extends layout
+
+block content
+  .container
+    form.form-signin(role='form', action="/update",method="post")
+        .row
+            .col-md-6.col-sm-6
+                input.form-control(type='text', name="name", placeholder='Name')
+                br
+                input.form-control(type='text', name="password", placeholder='password')
+                br
+                input.form-control(type='password', name="password again", placeholder='Password again')
+                br
+                br
+        
+        .row
+            .col-md-6.col-sm-12
+                h4 Shipping Address
+                br
+                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1')
+                br
+                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2')
+                br
+                input.form-control(type='text', name="shipping_state", placeholder='shipping state')
+                br
+                input.form-control(type='text', name="shipping_postcode", placeholder='shipping postcode')
+                br
+                input.form-control(type='text', name="shipping_country", placeholder='shipping country')
+                br        
+            .col-md-6.col-sm-12
+                h4 Billing Address
+                br
+                input.form-control(type='text', name="billing_address_1", placeholder='billing address 1')
+                br
+                input.form-control(type='text', name="billing_address_2", placeholder='billing address 2')
+                br
+                input.form-control(type='text', name="billing_state", placeholder='billing state')
+                br
+                input.form-control(type='text', name="billing_postcode", placeholder='billing postcode')
+                br
+                input.form-control(type='text', name="billing_country", placeholder='billing country')
+                br
+        .row
+            .col
+            .col
+                button.btn.btn-primary.btn-block(type='submit') UPDATE      
+            .col

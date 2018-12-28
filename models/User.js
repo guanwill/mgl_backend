@@ -39,6 +39,7 @@ var AddressSchema = new Schema({
 });
 
 UserSchema.plugin(passportLocalMongoose);
+
 // Convert schema to model
 const Address = mongoose.model('Address', AddressSchema);
 module.exports = mongoose.model('User', UserSchema);
