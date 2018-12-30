@@ -4,6 +4,9 @@ extends layout
 
 block content
   .container
+    if error != ""
+      p.alert.alert-danger= error
+    
     form.form-signin(role='form', action='/login', method='post', style='max-width: 300px;')
       h2.form-signin-heading Login
       br

@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+var flash = require('connect-flash');
 
 // Passport
 var passport = require('passport');
@@ -15,7 +16,7 @@ mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 
 // Routes
-var indexRouter = require('./routes/index');
+var indexRouter = require('./routes/users');
 
 var app = express();
 
@@ -25,6 +26,7 @@ mongoose.connect('mongodb://localhost/addy', { useNewUrlParser: true })
   .catch((err) => console.error(err));
 
 // Express session config
+// Session data is not saved in the cookie itself, just the session ID. Session data is stored server-side
 app.use(require('express-session')({
   secret: 'keyboard cat', // to hash session data
   cookie: {maxAge: 86400000},
@@ -33,8 +35,8 @@ app.use(require('express-session')({
 }));
 
 // Passport config
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize()); // use passport in express
+app.use(passport.session()); // for persistent login sessions
 const User = require('./models/user');
 passport.use(new LocalStrategy(User.authenticate())); // reason why we require User above
 passport.serializeUser(function (user, done) {
@@ -54,9 +56,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 
 app.use('/', indexRouter);
 
