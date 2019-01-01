@@ -68,24 +68,23 @@ router.get("/logout",function(req,res){
 });
 
 // route to update page
-router.get('/update',    
+router.get('/update/:id',    
     require('connect-ensure-login').ensureLoggedIn('/login'), // Checks if user is logged in, else redirect to login
     async function(req, res) {
-        let user = await userConcerns.populateUser(req.user._id)
+        let user = await userConcerns.populateUser(req.params.id)
         res.render('update',  { user : user, message: req.flash('message') })
     }
 );
 
 // route for update action
-router.post('/update',
+router.post('/update/:id',
     require('connect-ensure-login').ensureLoggedIn('/login'),
     async function(req, res) {
-        console.log(req.user);
         console.log(req.body);
 
         // Update address
         await addressConcerns.updateAddress(
-            req.body.user_id,
+            req.params.id,
             req.body.billing_address_1,
             req.body.billing_address_2,      
             req.body.billing_state,
@@ -98,30 +97,29 @@ router.post('/update',
             req.body.shipping_country
         );
         req.flash('message', 'Address updated!')
-        res.redirect('/update')
+        res.redirect('/update/' + req.params.id)
     }
 );
 
 // route to update user page
-router.get('/update_user',    
+router.get('/update_user/:id',    
     require('connect-ensure-login').ensureLoggedIn('/login'), // Checks if user is logged in, else redirect to login
     async function(req, res) {
-        let user = await userConcerns.populateUser(req.user._id) 
+        let user = await userConcerns.populateUser(req.params.id) 
         res.render('personal',  { user : user, message: req.flash('message') })
     }
 );
 
 // route for update user action
-router.post('/update_user',
+router.post('/update_user/:id',
     require('connect-ensure-login').ensureLoggedIn('/login'),
     async function(req, res) {
-        console.log(req.user);
         console.log(req.body);
         
         // Update user
-        await userConcerns.updateUser(req.body.user_id, req.body.name);    
+        await userConcerns.updateUser(req.params.id, req.body.name);    
         req.flash('message', 'User updated!')
-        res.redirect('/update_user')
+        res.redirect('/update_user/' + req.params.id)
     }
 );
 

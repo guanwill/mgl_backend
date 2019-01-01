@@ -5,7 +5,7 @@ block content
     if message != ""
         p.alert.alert-success= message
 
-    form.form-signin(role='form', action="/update_user",method="post")
+    form.form-signin(role='form', action=`/update_user/${user._id}`,method="post")
         .row
             .col-md-6.col-sm-6
                 h4 Account Details
