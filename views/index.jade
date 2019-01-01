@@ -3,6 +3,33 @@ extends layout
 block content
   .jumbotron
     if user
-      h1 Welcome #{user.name}!
-    h1 Node.js, Express.js, Mongoose.js and Passport.js
-    p User Authentication Example
+      h3= `Welcome ${user.name}!`
+      br
+
+      .row 
+        .card.col-md-6.col-sm-12
+          .card-body
+            h4.card-title Shipping Address
+            br
+            p.card-text= `${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`
+            p.card-text= `${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""} `
+              span.card-text= `${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""} `
+              span.card-text= `${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`
+            p.card-text= `${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""} `
+            a(href='/update') Edit 
+      
+        .card.col-md-6.col-sm-12
+          .card-body
+            h4.card-title Billing Address
+            br
+            p.card-text= `${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`
+            p.card-text= `${user.address[0].billing_address_2 != undefined ? user.address[0].billing_address_2 : ""} `
+              span.card-text= `${user.address[0].billing_state != undefined ? user.address[0].billing_state : ""} `
+              span.card-text= `${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`
+            p.card-text= `${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""} `
+            a(href='/update') Edit 
+
+      
+    else 
+      h3 Welcome to ADDi
+      p Store your address here

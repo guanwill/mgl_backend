@@ -9,19 +9,6 @@ block content
         input.form-control(type='hidden', name="user_id" value=`${user._id}`)
         .row
             .col-md-6.col-sm-12
-                h4 Shipping Address
-                br
-                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1' value=`${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`)
-                br
-                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2' value=`${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""}`)
-                br
-                input.form-control(type='text', name="shipping_state", placeholder='shipping state' value=`${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""}`)
-                br
-                input.form-control(type='number', name="shipping_postcode", placeholder='shipping postcode' value=`${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`)
-                br
-                input.form-control(type='text', name="shipping_country", placeholder='shipping country' value=`${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""}`)
-                br        
-            .col-md-6.col-sm-12
                 h4 Billing Address
                 br
                 input.form-control(type='text', name="billing_address_1", placeholder='billing address 1' value=`${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`)
@@ -34,8 +21,48 @@ block content
                 br
                 input.form-control(type='text', name="billing_country", placeholder='billing country' value=`${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""}`)
                 br
+                .form-check
+                    label.form-check-label
+                        input.form-check-input.check-for-shipping(type='checkbox', value='')
+                        |     Use this address for shipping
+                br
+            .col-md-6.col-sm-12
+                h4 Shipping Address
+                br
+                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1' value=`${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`)
+                br
+                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2' value=`${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""}`)
+                br
+                input.form-control(type='text', name="shipping_state", placeholder='shipping state' value=`${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""}`)
+                br
+                input.form-control(type='number', name="shipping_postcode", placeholder='shipping postcode' value=`${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`)
+                br
+                input.form-control(type='text', name="shipping_country", placeholder='shipping country' value=`${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""}`)
+                br  
         .row
             .col
             .col
                 button.btn.btn-primary.btn-block(type='submit') UPDATE      
             .col
+
+    script.
+        $(function() {
+            $('.check-for-shipping').on('click', function() {
+                if ( $('.check-for-shipping').is(":checked") ) {
+                    $('input[name="shipping_address_1"]').val($('input[name="billing_address_1"]').val())
+                    $('input[name="shipping_address_2"]').val($('input[name="billing_address_2"]').val())
+                    $('input[name="shipping_state"]').val($('input[name="billing_state"]').val())
+                    $('input[name="shipping_postcode"]').val($('input[name="billing_postcode"]').val())
+                    $('input[name="shipping_country"]').val($('input[name="billing_country"]').val())
+                } else {
+                    console.log('unchecked')
+                    let address = !{JSON.stringify(user)}.address[0]
+                    $('input[name="shipping_address_1"]').val(address.shipping_address_1 != undefined ? address.shipping_address_1 : "")
+                    $('input[name="shipping_address_2"]').val(address.shipping_address_2 != undefined ? address.shipping_address_2 : "")
+                    $('input[name="shipping_state"]').val(address.shipping_state != undefined ? address.shipping_state : "")
+                    $('input[name="shipping_postcode"]').val(address.shipping_postcode != undefined ? address.shipping_postcode : "")
+                    $('input[name="shipping_country"]').val(address.shipping_country != undefined ? address.shipping_country : "")                    
+                }                            
+            })
+        })
+        
