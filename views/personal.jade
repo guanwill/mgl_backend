@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .container
+    if message != ""
+        p.alert.alert-success= message
+
+    form.form-signin(role='form', action="/update_user",method="post")
+        .row
+            .col-md-6.col-sm-6
+                h4 Account Details
+                br
+                input.form-control(type='hidden', name="user_id" value=`${user._id}`)
+                input.form-control(type='text', name="username", placeholder='username' value=`${user.username}` readonly)
+                br
+                input.form-control(type='text', name="name", placeholder='Name' value=`${user.name}`)
+                br
+                input.form-control(type='text', name="password", placeholder='password')
+                br
+                input.form-control(type='password', name="password again", placeholder='Password again')
+                br
+        .row            
+            .col-md-6.col-sm-12
+                button.btn.btn-primary.btn-block(type='submit') UPDATE      
+            .col
+            .col
+        

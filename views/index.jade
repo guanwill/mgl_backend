@@ -2,5 +2,7 @@ extends layout
 
 block content
   .jumbotron
+    if user
+      h1 Welcome #{user.name}!
     h1 Node.js, Express.js, Mongoose.js and Passport.js
     p User Authentication Example

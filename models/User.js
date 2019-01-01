@@ -1,14 +1,14 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // Ensure username is in email format
-var validateEmail = function(email) {
-    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const validateEmail = function(email) {
+    const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return re.test(email)
 };
 
-var UserSchema = new Schema({
+let UserSchema = new Schema({
     username: {    
         type: String,
         trim: true,
@@ -24,22 +24,8 @@ var UserSchema = new Schema({
     address: [{ type: Schema.Types.ObjectId, ref: 'Address' }]
 });
 
-var AddressSchema = new Schema({
-    shipping_address_1: String,
-    shipping_address_2: String,
-    shipping_postcode: Number,
-    shipping_state: String,
-    shipping_country: String,
-    billing_address_1: String,
-    billing_address_2: String,
-    billing_postcode: Number,
-    billing_state: String,
-    billing_country: String,
-    user: { type: Schema.Types.ObjectId, ref: 'Person' },
-});
-
 UserSchema.plugin(passportLocalMongoose);
+const User = mongoose.model('User', UserSchema);
 
-// Convert schema to model
-const Address = mongoose.model('Address', AddressSchema);
-module.exports = mongoose.model('User', UserSchema);
+module.exports = User
+    

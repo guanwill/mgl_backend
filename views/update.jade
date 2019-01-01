@@ -2,45 +2,37 @@ extends layout
 
 block content
   .container
-    p hey
-    p= user
-    form.form-signin(role='form', action="/update",method="post")
-        .row
-            .col-md-6.col-sm-6
-                input.form-control(type='text', name="name", placeholder='Name')
-                br
-                input.form-control(type='text', name="password", placeholder='password')
-                br
-                input.form-control(type='password', name="password again", placeholder='Password again')
-                br
-                br
-        
+    if message != ""
+        p.alert.alert-success= message
+    
+    form.form-signin(role='form', action="/update",method="post")        
+        input.form-control(type='hidden', name="user_id" value=`${user._id}`)
         .row
             .col-md-6.col-sm-12
                 h4 Shipping Address
                 br
-                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1')
+                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1' value=`${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`)
                 br
-                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2')
+                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2' value=`${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""}`)
                 br
-                input.form-control(type='text', name="shipping_state", placeholder='shipping state')
+                input.form-control(type='text', name="shipping_state", placeholder='shipping state' value=`${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""}`)
                 br
-                input.form-control(type='text', name="shipping_postcode", placeholder='shipping postcode')
+                input.form-control(type='number', name="shipping_postcode", placeholder='shipping postcode' value=`${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`)
                 br
-                input.form-control(type='text', name="shipping_country", placeholder='shipping country')
+                input.form-control(type='text', name="shipping_country", placeholder='shipping country' value=`${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""}`)
                 br        
             .col-md-6.col-sm-12
                 h4 Billing Address
                 br
-                input.form-control(type='text', name="billing_address_1", placeholder='billing address 1')
+                input.form-control(type='text', name="billing_address_1", placeholder='billing address 1' value=`${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`)
                 br
-                input.form-control(type='text', name="billing_address_2", placeholder='billing address 2')
+                input.form-control(type='text', name="billing_address_2", placeholder='billing address 2' value=`${user.address[0].billing_address_2 != undefined ? user.address[0].billing_address_2 : ""}`)
                 br
-                input.form-control(type='text', name="billing_state", placeholder='billing state')
+                input.form-control(type='text', name="billing_state", placeholder='billing state' value=`${user.address[0].billing_state != undefined ? user.address[0].billing_state : ""}`)
                 br
-                input.form-control(type='text', name="billing_postcode", placeholder='billing postcode')
+                input.form-control(type='number', name="billing_postcode", placeholder='billing postcode' value=`${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`)
                 br
-                input.form-control(type='text', name="billing_country", placeholder='billing country')
+                input.form-control(type='text', name="billing_country", placeholder='billing country' value=`${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""}`)
                 br
         .row
             .col

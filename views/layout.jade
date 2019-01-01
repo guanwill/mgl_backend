@@ -20,13 +20,12 @@ html
               a.nav-link(href='/register') Register
             
           if (user)
-            li.nav-item
-              span.navbar-text(style="color:black;margin:0 12px") Welcome #{user.name}
             li.nav-item.dropdown
                 a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
                   | My Account
-                .dropdown-menu(aria-labelledby='navbarDropdown')
-                  a.dropdown-item(href='/update') Edit
+                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
+                  a.dropdown-item(href='/update_user') Edit Account
+                  a.dropdown-item(href='/update') Edit Address
                   a.dropdown-item(href='/logout') Logout                        
 
     div.container

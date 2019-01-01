@@ -1,24 +1,24 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-var flash = require('connect-flash');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const flash = require('connect-flash');
 
 // Passport
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy; // to use username and password for authentication
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy; // to use username and password for authentication
 
 // Mongoose
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);
 
 // Routes
-var indexRouter = require('./routes/users');
+const indexRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
 // Db connection
 mongoose.connect('mongodb://localhost/addy', { useNewUrlParser: true })
