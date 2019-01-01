@@ -139,17 +139,21 @@ router.post("/forgot_password", async function(req,res){
 router.get("/reset_password/:token", async function(req,res){
     let token = req.params.token
     let user = await userConcerns.findUserByToken(token);
-    if (new Date().setHours(0, 0, 0, 0) - user[0].token_created_at.setHours(0, 0, 0, 0) < 2) { // Compare dates without worrying about time elements
+    if (new Date().setHours(0, 0, 0, 0) - user[0].token_created_at.setHours(0, 0, 0, 0) > 2) { // Compare dates without worrying about time elements
         req.flash('message', 'Link expired! Send new link to email')
         res.redirect('/forgot_password')
     } else {
-        res.render('reset_password');
+        res.render('reset_password', {token: token});
     }
 });
 
 // // route for reset pw action
-router.post("/reset_password", async function(req,res){  
-    req.body.password
+router.post("/reset_password/:token", async function(req,res){  
+    let token = req.params.token
+    let newPassword = req.body.password;
+    let user = await userConcerns.setNewPassword(token, newPassword);
+    req.flash('message', 'Password updated!')
+    res.redirect('/login')
 });
 
 module.exports = router;

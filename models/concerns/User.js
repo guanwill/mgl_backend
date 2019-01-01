@@ -63,8 +63,9 @@ async function sendResetPasswordEmail(username) {
     })    
 }
 
-async function sendEmail(username, token) {    
+async function sendEmail(username, token) {
     let transporter = nodemailer.createTransport({
+        // settings for fakesmtp for dev testing
         host: '127.0.0.1',
         port: 10000,
         secure: false // true for 465, false for other ports
@@ -96,11 +97,25 @@ async function findUserByToken(token) {
     })
 }
 
+async function setNewPassword(token, newPassword) {
+    return new Promise(async function (resolve,reject) {
+        await User.find({token: token}, async function (err, user) {
+            if (err) { return err } 
+            else { 
+                await user[0].setPassword(newPassword);
+                await user[0].save();
+                resolve();
+            }
+        });        
+    })
+}
+
 
 module.exports = {
     updateUser,
     populateUser,
     sendResetPasswordEmail,
-    findUserByToken
+    findUserByToken,
+    setNewPassword
 }
 
