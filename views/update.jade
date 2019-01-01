@@ -11,11 +11,11 @@ block content
             .col-md-6.col-sm-12
                 h4 Billing Address
                 br
-                input.form-control(type='text', name="billing_address_1", placeholder='billing address 1' value=`${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`)
+                input.form-control(required type='text', name="billing_address_1", placeholder='billing address 1' value=`${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`)
                 br
-                input.form-control(type='text', name="billing_address_2", placeholder='billing address 2' value=`${user.address[0].billing_address_2 != undefined ? user.address[0].billing_address_2 : ""}`)
+                input.form-control(required type='text', name="billing_address_2", placeholder='billing address 2' value=`${user.address[0].billing_address_2 != undefined ? user.address[0].billing_address_2 : ""}`)
                 br
-                select.form-control(name="billing_state")
+                select.form-control(required name="billing_state")
                     option(value="") State
                     option(value="nsw") NSW
                     option(value="wa") WA
@@ -24,9 +24,9 @@ block content
                     option(value="vic") VIC
                     option(value="tas") TAS
                 br
-                input.form-control(type='number', name="billing_postcode", placeholder='billing postcode' value=`${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`)
+                input.form-control(required type='number', name="billing_postcode", placeholder='billing postcode' value=`${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`)
                 br
-                input.form-control(type='text', name="billing_country", placeholder='billing country' value='Australia' readonly)
+                input.form-control(required type='text', name="billing_country", placeholder='billing country' value='Australia' readonly)
                 //- input.form-control(type='text', name="billing_country", placeholder='billing country' value=`${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""}`)
                 br
                 .form-check
@@ -37,11 +37,11 @@ block content
             .col-md-6.col-sm-12
                 h4 Shipping Address
                 br
-                input.form-control(type='text', name="shipping_address_1", placeholder='shipping address 1' value=`${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`)
+                input.form-control(required type='text', name="shipping_address_1", placeholder='shipping address 1' value=`${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`)
                 br
-                input.form-control(type='text', name="shipping_address_2", placeholder='shipping address 2' value=`${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""}`)
+                input.form-control(required type='text', name="shipping_address_2", placeholder='shipping address 2' value=`${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""}`)
                 br
-                select.form-control(name="shipping_state")
+                select.form-control(required name="shipping_state")
                     option(value="") State
                     option(value="nsw") NSW
                     option(value="wa") WA
@@ -50,9 +50,9 @@ block content
                     option(value="vic") VIC
                     option(value="tas") TAS
                 br
-                input.form-control(type='number', name="shipping_postcode", placeholder='shipping postcode' value=`${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`)
+                input.form-control(required type='number', name="shipping_postcode", placeholder='shipping postcode' value=`${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`)
                 br
-                input.form-control(type='text', name="shipping_country", placeholder='shipping country' value='Australia' readonly)
+                input.form-control(required type='text', name="shipping_country", placeholder='shipping country' value='Australia' readonly)
                 //- input.form-control(type='text', name="shipping_country", placeholder='shipping country' value=`${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""}`)
                 br  
         .row
@@ -77,7 +77,7 @@ block content
                     $('input[name="shipping_address_2"]').val(address.shipping_address_2 != undefined ? address.shipping_address_2 : "")
                     $('select[name="shipping_state"]').val(address.shipping_state != undefined ? address.shipping_state : "")
                     $('input[name="shipping_postcode"]').val(address.shipping_postcode != undefined ? address.shipping_postcode : "")
-                    $('input[name="shipping_country"]').val(address.shipping_country != undefined ? address.shipping_country : "")                    
+                    $('input[name="shipping_country"]').val('Australia')                    
                 }                            
             })
 

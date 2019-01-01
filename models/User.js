@@ -21,7 +21,9 @@ let UserSchema = new Schema({
     name: String,
     password: String,    
     phone: Number,
-    address: [{ type: Schema.Types.ObjectId, ref: 'Address' }]
+    address: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
+    token: String, // for resetting pw
+    token_created_at: {type: Date} 
 });
 
 UserSchema.plugin(passportLocalMongoose);

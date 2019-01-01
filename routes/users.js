@@ -123,4 +123,33 @@ router.post('/update_user/:id',
     }
 );
 
+// route for forgot pw page
+router.get("/forgot_password", async function(req,res){
+    res.render('forgot_password', {message: req.flash('message')});
+});
+
+// route for forgot pw action
+router.post("/forgot_password", async function(req,res){
+    await userConcerns.sendResetPasswordEmail(req.body.username)
+    req.flash('message', 'Email sent!')
+    res.redirect('/forgot_password')
+});
+
+// // route for reset pw page
+router.get("/reset_password/:token", async function(req,res){
+    let token = req.params.token
+    let user = await userConcerns.findUserByToken(token);
+    if (new Date().setHours(0, 0, 0, 0) - user[0].token_created_at.setHours(0, 0, 0, 0) < 2) { // Compare dates without worrying about time elements
+        req.flash('message', 'Link expired! Send new link to email')
+        res.redirect('/forgot_password')
+    } else {
+        res.render('reset_password');
+    }
+});
+
+// // route for reset pw action
+router.post("/reset_password", async function(req,res){  
+    req.body.password
+});
+
 module.exports = router;
