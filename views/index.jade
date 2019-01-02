@@ -16,7 +16,7 @@ block content
               span.card-text= `${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""} `
               span.card-text= `${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`
             p.card-text= `${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""} `
-            a(href='/update') Edit 
+            a(href=`/update/${user._id}`) Edit 
       
         .card.col-md-6.col-sm-12
           .card-body
@@ -27,7 +27,7 @@ block content
               span.card-text= `${user.address[0].billing_state != undefined ? user.address[0].billing_state : ""} `
               span.card-text= `${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`
             p.card-text= `${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""} `
-            a(href='/update') Edit 
+            a(href=`/update/${user._id}`) Edit 
 
       
     else 

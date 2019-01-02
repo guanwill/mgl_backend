@@ -48,7 +48,7 @@ router.post("/register",function(req,res){
 
 // route to login page
 router.get("/login",function(req,res){    
-    res.render('login', {error : req.flash('error')});
+    res.render('login', {error : req.flash('error'), message: req.flash('message')});
 });
 
 // route for login action
@@ -125,13 +125,18 @@ router.post('/update_user/:id',
 
 // route for forgot pw page
 router.get("/forgot_password", async function(req,res){
-    res.render('forgot_password', {message: req.flash('message')});
+    res.render('forgot_password', {error: req.flash('error'), message: req.flash('message')});
 });
 
 // route for forgot pw action
 router.post("/forgot_password", async function(req,res){
-    await userConcerns.sendResetPasswordEmail(req.body.username)
-    req.flash('message', 'Email sent!')
+    let doc = await userConcerns.sendResetPasswordEmail(req.body.username)
+    if (doc != null) {
+        req.flash('message', 'Email sent!')
+    } else {
+        req.flash('error', 'Email does not exist in our system!')
+    }
+    
     res.redirect('/forgot_password')
 });
 

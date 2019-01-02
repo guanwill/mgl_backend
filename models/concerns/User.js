@@ -47,7 +47,7 @@ async function sendResetPasswordEmail(username) {
         };
         var options = {        
             new: true, // Return the document after updates are applied        
-            upsert: true, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
+            upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
         };
 
         User.findOneAndUpdate(query, update, options, function (error, doc) {
@@ -57,7 +57,9 @@ async function sendResetPasswordEmail(username) {
             }
             console.log(doc)
 
-            sendEmail(username, token)
+            if (doc != null) {
+                sendEmail(username, token)
+            }
             resolve(doc)
         });
     })    

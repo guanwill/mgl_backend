@@ -4,8 +4,8 @@ block content
   .container
     if error != ""
       p.alert.alert-danger= error
-    if message != ""
-      p.alert.alert-danger= message
+    if message.length > 0
+      p.alert.alert-success= message
     
     form.form-signin(role='form', action='/login', method='post', style='max-width: 300px;')
       h2.form-signin-heading Login
