@@ -1,7 +1,8 @@
 const User = require('../user');
 const nodemailer = require('nodemailer');
 
-async function updateUser(user_id, name) {
+// update username and new password if available
+async function updateUser(user_id, name, password) {
     return new Promise(async function (resolve,reject) {
         var query = {_id: user_id};
         var update = {name: `${name}`};
@@ -11,17 +12,21 @@ async function updateUser(user_id, name) {
             // setDefaultsOnInsert: true
         };
 
-        User.findOneAndUpdate(query, update, options, function (error, doc) {
+        User.findOneAndUpdate(query, update, options, async function (error, doc) {
             if (error) {
                 console.log(error)
                 reject(new Error('Unable to add/edit user'))
             }
             console.log(doc)
+            if (password != "") {
+                await updatePassword(user_id, password);                
+            }
             resolve(doc)
         });
     })    
 }
 
+// get user with address details
 async function populateUser(user_id) {
     return new Promise(async function (resolve,reject) {
         User.findOne({_id: user_id })
@@ -34,6 +39,7 @@ async function populateUser(user_id) {
     })
 }
 
+// send user reset pw link
 async function sendResetPasswordEmail(username) {
     return new Promise(async function (resolve,reject) {
         let token = require('crypto').randomBytes(64).toString('hex');
@@ -90,6 +96,7 @@ async function sendEmail(username, token) {
     });
 }
 
+// find user using reset pw token to reset pw
 async function findUserByToken(token) {
     return new Promise(async function (resolve,reject) {
         await User.find({token: token}, function (err, doc) {
@@ -99,12 +106,27 @@ async function findUserByToken(token) {
     })
 }
 
+// to reset pw from forgotten pw
 async function setNewPassword(token, newPassword) {
     return new Promise(async function (resolve,reject) {
         await User.find({token: token}, async function (err, user) {
             if (err) { return err } 
             else { 
                 await user[0].setPassword(newPassword);
+                await user[0].save();
+                resolve();
+            }
+        });        
+    })
+}
+
+// to update pw from acc settings
+async function updatePassword(user_id, password) {
+    return new Promise(async function (resolve,reject) {
+        await User.find({_id: user_id}, async function (err, user) {
+            if (err) { return err } 
+            else { 
+                await user[0].setPassword(password);
                 await user[0].save();
                 resolve();
             }

@@ -54,7 +54,8 @@ router.get("/login",function(req,res){
 // route for login action
 router.post("/login",
     passport.authenticate('local', {
-        successReturnToOrRedirect: '/',
+        // successReturnToOrRedirect: '/',
+        successRedirect: '/',
         failureRedirect: '/login',
         failureFlash : { type: 'error', message: 'Error logging in' }        
     })    
@@ -117,7 +118,7 @@ router.post('/update_user/:id',
         console.log(req.body);
         
         // Update user
-        await userConcerns.updateUser(req.params.id, req.body.name);    
+        await userConcerns.updateUser(req.params.id, req.body.name, req.body.password);    
         req.flash('message', 'User updated!')
         res.redirect('/update_user/' + req.params.id)
     }

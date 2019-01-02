@@ -1,27 +1,53 @@
 extends layout
 
 block content
-  .container
-    if message != ""
-        p.alert.alert-success= message
+    .container
+        if message != ""
+            p.alert.alert-success= message
 
-    form.form-signin(role='form', action=`/update_user/${user._id}`,method="post")
-        .row
-            .col-md-6.col-sm-6
-                h4 Account Details
-                br
-                input.form-control(type='hidden', name="user_id" value=`${user._id}`)
-                input.form-control(type='text', name="username", placeholder='username' value=`${user.username}` readonly)
-                br
-                input.form-control(type='text', name="name", placeholder='Name' value=`${user.name}`)
-                br
-                input.form-control(type='text', name="password", placeholder='password')
-                br
-                input.form-control(type='password', name="password again", placeholder='Password again')
-                br
-        .row            
-            .col-md-6.col-sm-12
-                button.btn.btn-primary.btn-block(type='submit') UPDATE      
-            .col
-            .col
+        form.form-signin(role='form', action=`/update_user/${user._id}`,method="post")
+            .row
+                .col-md-6.col-sm-6
+                    h4 Account Details
+                    br
+                    input.form-control(type='hidden', name="user_id" value=`${user._id}`)
+                    input.form-control(type='text', name="username", placeholder='username' value=`${user.username}` readonly)
+                    br
+                    input.form-control(type='text', name="name", placeholder='Name' value=`${user.name}`)
+                    br
+                    input.form-control(type='password', name="password", placeholder='password')
+                    br
+                    input.form-control(type='password', name="password_again", placeholder='Password again')
+                    br
+            .row            
+                .col-md-6.col-sm-12
+                    button.btn.btn-primary.btn-block.submit_update(type='submit') UPDATE      
+                .col
+                .col
+    script.
+        $(function() {
+            // ensure new password is validated and is same across the two fields                    
+                $('input[name="password"]').on('keyup', function() {
+                    if ( $('input[name="password"]').val().length > 0 ||  $('input[name="password_again"]').val().length > 0 ) {
+                        if ( $('input[name="password"]').val() == $('input[name="password_again"]').val() ) {
+                            $('.submit_update').attr('disabled', false)
+                        } else {
+                            $('.submit_update').attr('disabled', true)
+                        }
+                    } else {
+                        $('.submit_update').attr('disabled', false)
+                    }
+                })
+                $('input[name="password_again"]').on('keyup', function() {
+                    if ( $('input[name="password"]').val().length > 0 ||  $('input[name="password_again"]').val().length > 0 ) {
+                        if ( $('input[name="password"]').val() == $('input[name="password_again"]').val() ) {
+                            $('.submit_update').attr('disabled', false)
+                        } else {
+                            $('.submit_update').attr('disabled', true)
+                        }
+                    } else {
+                        $('.submit_update').attr('disabled', false)
+                    } 
+                })            
+        })
         
