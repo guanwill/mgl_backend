@@ -23,7 +23,10 @@ let UserSchema = new Schema({
     phone: Number,
     address: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
     token: String, // for resetting pw
-    token_created_at: {type: Date} 
+    token_created_at: Date, 
+    verified: {type: Boolean, default: false},
+    verification_token: String,
+    verification_token_created_at: Date
 });
 
 UserSchema.plugin(passportLocalMongoose);

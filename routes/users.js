@@ -32,7 +32,7 @@ router.post("/register",function(req,res){
         }        
     
         // passport.authenticate is authenticating a request when a user 1st submits a login form,but for subsequent routes this shouldn't need to be the case
-        passport.authenticate('local')(req, res, function () {
+        passport.authenticate('local')(req, res, async function () {
             console.log(req.user)
 
             // After creating user, create its associated address doc
@@ -41,7 +41,12 @@ router.post("/register",function(req,res){
             user.address.push(userAddress); // Push this address doc into that user for relational purposes
             user.save();
 
-            res.redirect('/');
+            // send verification email to user after registration
+            await userConcerns.sendVerificationEmail(req.user.username);
+            
+            // redirect user to login as it needs to be verified first
+            req.flash('message', 'Please verify your account first!')
+            res.redirect('/login');
         });
     });    
 });
@@ -55,10 +60,23 @@ router.get("/login",function(req,res){
 router.post("/login",
     passport.authenticate('local', {
         // successReturnToOrRedirect: '/',
-        successRedirect: '/',
+        // successRedirect: '/',
         failureRedirect: '/login',
         failureFlash : { type: 'error', message: 'Error logging in' }        
-    })    
+    }),
+    function(req, res) {
+        // If this function gets called, authentication was successful.
+        // `req.user` contains the authenticated user.
+        // Manage successful redirects manually here
+        console.log(req.user);
+        if (req.user.verified == false) {
+            req.flash('message', 'Please verify your account first!')
+            res.redirect('/login')
+        } else {
+            res.redirect('/')
+        }
+        
+    }
 );
 
 
@@ -146,7 +164,7 @@ router.get("/reset_password/:token", async function(req,res){
     let token = req.params.token
     let user = await userConcerns.findUserByToken(token);
     if (new Date().setHours(0, 0, 0, 0) - user[0].token_created_at.setHours(0, 0, 0, 0) > 2) { // Compare dates without worrying about time elements
-        req.flash('message', 'Link expired! Send new link to email')
+        req.flash('error', 'Link expired! Send new link to email')
         res.redirect('/forgot_password')
     } else {
         res.render('reset_password', {token: token});
@@ -160,6 +178,35 @@ router.post("/reset_password/:token", async function(req,res){
     let user = await userConcerns.setNewPassword(token, newPassword);
     req.flash('message', 'Password updated!')
     res.redirect('/login')
+});
+
+// route for resend verification page
+router.get("/verify_account", async function(req,res){
+    res.render('verify_account', {error: req.flash('error'), message: req.flash('message')});
+});
+
+// route for sending verificaiton email
+router.post("/verify_account", async function(req,res){
+    let doc = await userConcerns.sendVerificationEmail(req.body.username)
+    if (doc != null) {
+        req.flash('message', 'Email sent!')
+    } else {
+        req.flash('error', 'Email does not exist in our system!')
+    }
+    res.redirect('/verify_account')
+});
+
+// route to verify account
+router.get("/verify_account/:token", async function(req,res){
+    let verification_token = req.params.token
+    let user = await userConcerns.verifyUser(verification_token);
+    if (user == 'expired') {
+        req.flash('error', 'Link expired! Send new link to email')
+        res.redirect('/verify_account');
+    } else {
+        req.flash('message', 'Account verified!')
+        res.redirect('/login');
+    }
 });
 
 module.exports = router;
