@@ -8,26 +8,10 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
   body
     nav.navbar.navbar-expand-lg.navbar-dark(style={background: '#00BBAF', padding: '20px'})
-      a.navbar-brand(href='/') ADDi
+      a.navbar-brand(href='/') passport-boilerplate
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
       #navbarSupportedContent.collapse.navbar-collapse
-        //- ml to put nav items on right, mr to left
-        ul.navbar-nav.ml-auto
-          if (!user)
-            li.nav-item
-              a.nav-link(href='/login') Login
-            li.nav-item
-              a.nav-link(href='/register') Register
-            
-          if (user)
-            li.nav-item.dropdown
-                a#navbarDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-                  | My Account
-                .dropdown-menu.dropdown-menu-right(aria-labelledby='navbarDropdown')
-                  a.dropdown-item(href=`/update_user/${user._id}`) Edit Account
-                  a.dropdown-item(href=`/update/${user._id}`) Edit Address
-                  a.dropdown-item(href='/logout') Logout                        
 
     div.container
       div.content(style={padding: '50px 0'})

@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const flash = require('connect-flash');
 const passport = require('passport');
+const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const gamesRouter = require('./routes/games');
@@ -25,8 +26,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 
 // Routes
+app.use('/', indexRouter);
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter);
+app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
 
 // catch 404 and forward to error handler

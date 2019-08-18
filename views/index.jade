@@ -2,34 +2,7 @@ extends layout
 
 block content
   .jumbotron
-    if user
-      h3= `Welcome ${user.name}!`
-      br
-
-      .row 
-        .card.col-md-6.col-sm-12
-          .card-body
-            h4.card-title Shipping Address
-            br
-            p.card-text= `${user.address[0].shipping_address_1 != undefined ? user.address[0].shipping_address_1 : ""}`
-            p.card-text= `${user.address[0].shipping_address_2 != undefined ? user.address[0].shipping_address_2 : ""} `
-              span.card-text= `${user.address[0].shipping_state != undefined ? user.address[0].shipping_state : ""} `
-              span.card-text= `${user.address[0].shipping_postcode != undefined ? user.address[0].shipping_postcode : ""}`
-            p.card-text= `${user.address[0].shipping_country != undefined ? user.address[0].shipping_country : ""} `
-            a(href=`/update/${user._id}`) Edit
-      
-        .card.col-md-6.col-sm-12
-          .card-body
-            h4.card-title Billing Address
-            br
-            p.card-text= `${user.address[0].billing_address_1 != undefined ? user.address[0].billing_address_1 : ""}`
-            p.card-text= `${user.address[0].billing_address_2 != undefined ? user.address[0].billing_address_2 : ""} `
-              span.card-text= `${user.address[0].billing_state != undefined ? user.address[0].billing_state : ""} `
-              span.card-text= `${user.address[0].billing_postcode != undefined ? user.address[0].billing_postcode : ""}`
-            p.card-text= `${user.address[0].billing_country != undefined ? user.address[0].billing_country : ""} `
-            a(href=`/update/${user._id}`) Edit
-
-      
-    else 
-      h3 Welcome to ADDi
-      p Store your address here
+    h3 Welcome to passport-boilerplate
+    ul
+      li This project supports common auth api endpoints. 
+      li Please visit github for more info: https://github.com/guanwill/passport-boilerplate/tree/feature/api

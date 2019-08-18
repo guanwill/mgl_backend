@@ -4,6 +4,7 @@ const passport = require('passport');
 const router = express.Router();
 const User = require('../models/user');
 const userConcerns = require('../models/concerns/User');
+const statusMessages = require('../shared/statusMessages');
 
 // route for register action
 router.post("/register", function (req, res) {
@@ -12,15 +13,13 @@ router.post("/register", function (req, res) {
         name: req.body.name
     }), req.body.password, function (err, user) {
         if (err) {
-            res.status(400).json({ error: "username invalid", message: "Username already exists or is not an email. Please try again." })
+            res.status(400).json({ message: statusMessages.invalid_username })
         }
 
         passport.authenticate('local')(req, res, async function () {
-            console.log(req.user)
-            user.save();
-            // send verification email to user after registration
+            await user.save();
             await userConcerns.sendVerificationEmail(req.user.username);
-            res.status(200).json({ success: "user saved pending verification", message: "User created. Please verify your account." })
+            res.status(200).json({ message: statusMessages.user_created_pending_verification })
         });
     });
 });
@@ -29,7 +28,7 @@ router.post('/login', function (req, res, next) {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
             return res.status(400).json({
-                error: 'invalid username or password',
+                message: statusMessages.login_failed,
                 user: user
             });
         }
@@ -38,7 +37,7 @@ router.post('/login', function (req, res, next) {
                 res.json(err);
             }
             if (!user.verified) {
-                res.status(200).json({ success: "user pending verification", message: "Please verify your account." })
+                res.status(200).json({ message: statusMessages.user_created_pending_verification })
             }
             const token = 'secret' // this secret should be from config and more complex
             const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '5m' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
@@ -52,9 +51,9 @@ router.post('/login', function (req, res, next) {
 router.post("/forgot_password", async function (req, res) {
     let doc = await userConcerns.sendTempPassword(req.body.username)
     if (doc != null) {
-        res.status(200).json({ success: "email sent with temporary password", message: "Email sent with temporary password!" })
+        res.status(200).json({ message: statusMessages.temp_password })
     } else {
-        res.status(400).json({ error: "email invalid", message: "Email does not exist in our system!" })
+        res.status(400).json({ message: statusMessages.invalid_email })
     }
 });
 
@@ -62,9 +61,9 @@ router.post("/forgot_password", async function (req, res) {
 router.post("/resend_verification_email", async function (req, res) {
     let doc = await userConcerns.sendVerificationEmail(req.body.username)
     if (doc != null) {
-        res.status(200).json({ success: "verification email sent", message: "Verification email sent!" })
+        res.status(200).json({ message: statusMessages.verification_email_sent })
     } else {
-        res.status(400).json({ error: "invalid email", message: "Email does not exist in our system!" })
+        res.status(400).json({ message: statusMessages.invalid_email })
     }
 });
 
@@ -73,9 +72,9 @@ router.get("/verify_account/:token", async function (req, res) {
     let verification_token = req.params.token
     let user = await userConcerns.verifyUser(verification_token);
     if (user == 'expired') {
-        res.status(200).json({ success: "link expired", message: "Link expired. Please generate a new verification link." })
+        res.status(200).json({ message: statusMessages.verification_link_expired })
     } else {
-        res.status(200).json({ success: "Account verified", message: "Account verified" })
+        res.status(200).json({ message: statusMessages.account_verified })
     }
 });
 
