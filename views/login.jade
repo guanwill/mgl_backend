@@ -7,7 +7,7 @@ block content
     if message.length > 0
       p.alert.alert-success= message
     
-    form.form-signin(role='form', action='/login', method='post', style='max-width: 300px;')
+    form.form-signin(role='form', action='/api/v1/auth/login', method='post', style='max-width: 300px;')
       h2.form-signin-heading Login
       br
       label.sr-only(for='inputEmail')
@@ -18,6 +18,6 @@ block content
       button.btn.btn-primary.btn-block(type='submit') LOGIN
     br
 
-    a(href='/forgot_password') Forgot password
+    a(href='/api/v1/auth/forgot_password') Forgot password
     br
-    a(href='/verify_account') Resend verification email
+    a(href='/api/v1/auth/verify_account') Resend verification email

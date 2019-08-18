@@ -6,7 +6,7 @@ block content
       p.alert.alert-danger= info
     
     h2.form-signin-heading Sign Up
-    form.form-signin(role='form', action="/register",method="post", style='max-width: 300px;')      
+    form.form-signin(role='form', action="/api/v1/auth/register",method="post", style='max-width: 300px;')      
       br
       input.form-control(type='text', name="name", placeholder='Name')
       br

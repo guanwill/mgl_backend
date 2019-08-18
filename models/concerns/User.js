@@ -1,7 +1,7 @@
 const User = require('../user');
 const nodemailer = require('nodemailer');
 
-// update username and new password if available
+// update name, username and new password if available
 async function updateUser(user_id, name, password) {
     return new Promise(async function (resolve,reject) {
         var query = {_id: user_id};
@@ -73,6 +73,25 @@ async function sendResetPasswordEmail(username) {
     })    
 }
 
+async function sendTempPassword(username) {
+    let tempPassword = require('crypto').randomBytes(64).toString('hex').substring(0, 10);
+    console.log(tempPassword);
+
+    await User.find({username: username}, async function (err, user) {
+        if (err) { 
+            return err 
+        } 
+        else { 
+            await user[0].setPassword(tempPassword);
+            await user[0].save();
+
+            let subject = `MGL - Temp Password`;
+            let message = `Your temp password is: ${tempPassword}`;
+            return await sendEmail(username, subject, message)
+        }
+    }); 
+}
+
 async function sendEmail(username, subject, message) {
     let transporter = nodemailer.createTransport({
         // settings for fakesmtp for dev testing
@@ -82,8 +101,8 @@ async function sendEmail(username, subject, message) {
     });
 
     let mailOptions = {
-        replyTo: `no-reply@addi.com.au`,
-        from: `no-reply@addi.com.au`, // sender address
+        replyTo: `no-reply@mgl.com.au`,
+        from: `no-reply@mgl.com.au`, // sender address
         to: `${username}`, // list of receivers
         subject: `${subject}`, // Subject line
         text: `${message}`, // plain text body
@@ -160,8 +179,8 @@ async function sendVerificationEmail(username) {
             console.log(doc)
 
             if (doc != null) {
-                let subject = `ADDi - Verify Account`
-                let message = `Visit this link to verify account: http://localhost:3000/verify_account/${verification_token}`
+                let subject = `MGL - Verify Account`
+                let message = `Visit this link to verify account: http://localhost:3000/api/v1/auth/verify_account/${verification_token}`
                 sendEmail(username, subject, message)
             }
             resolve(doc)
@@ -218,6 +237,7 @@ module.exports = {
     setNewPassword,
     sendVerificationEmail,
     findUserByVerificationToken,
-    verifyUser
+    verifyUser,
+    sendTempPassword
 }
 
