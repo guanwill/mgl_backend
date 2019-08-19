@@ -1,4 +1,4 @@
-const User = require('../user');
+const User = require('../User');
 const nodemailer = require('nodemailer');
 
 // update name, username and new password if available
@@ -27,13 +27,13 @@ async function updateUser(user_id, name, password) {
 async function sendTempPassword(username) {
     let tempPassword = require('crypto').randomBytes(64).toString('hex').substring(0, 10);
 
-    await User.find({ username: username }, async function (err, user) {
+    await User.findOne({ username: username }, async function (err, user) {
         if (err) {
             return err
         }
         else {
-            await user[0].setPassword(tempPassword);
-            await user[0].save();
+            await user.setPassword(tempPassword);
+            await user.save();
 
             let subject = `MGL - Temp Password`;
             let message = `Your temp password is: ${tempPassword}`;
@@ -69,7 +69,7 @@ async function sendEmail(username, subject, message) {
 
 // to update pw from acc settings
 async function updatePassword(user_id, password) {
-    await User.find({ _id: user_id }, async function (err, user) {
+    await User.findOne({ _id: user_id }, async function (err, user) {
         if (err) { return err }
         else {
             await user[0].setPassword(password);
@@ -112,7 +112,7 @@ async function sendVerificationEmail(username) {
 
 // find user using verification token
 async function findUserByVerificationToken(verification_token) {
-    await User.find({ verification_token: verification_token }, function (err, doc) {
+    await User.findOne({ verification_token: verification_token }, function (err, doc) {
         if (err) { return err }
         else { return doc }
     });
@@ -152,6 +152,6 @@ module.exports = {
     sendTempPassword,
     sendVerificationEmail,
     findUserByVerificationToken,
-    verifyUser
+    verifyUser,
 }
 

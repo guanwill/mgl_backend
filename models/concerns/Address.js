@@ -1,5 +1,4 @@
 const Address = require('../address');
-const User = require('../user');
 
 async function updateAddress(
     user_id,

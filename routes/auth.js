@@ -2,7 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const router = express.Router();
-const User = require('../models/user');
+const User = require('../models/User');
 const userConcerns = require('../models/concerns/User');
 const statusMessages = require('../shared/statusMessages');
 
@@ -40,7 +40,7 @@ router.post('/login', function (req, res, next) {
                 res.status(200).json({ message: statusMessages.user_created_pending_verification })
             }
             const token = 'secret' // this secret should be from config and more complex
-            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '5m' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
+            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '1h' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
             res.json({ user, accesstoken });
             res.cookie('token', accesstoken, { httpOnly: true }).sendStatus(200); // saves to browser cookies for frontend to use. FE can redirect after checking status is 200
         });
