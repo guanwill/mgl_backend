@@ -40,7 +40,7 @@ router.post('/login', function (req, res, next) {
                 res.status(200).json({ message: statusMessages.user_created_pending_verification })
             }
             const token = 'secret' // this secret should be from config and more complex
-            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '1h' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
+            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '1d' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
             res.json({ user, accesstoken });
             res.cookie('token', accesstoken, { httpOnly: true }).sendStatus(200); // saves to browser cookies for frontend to use. FE can redirect after checking status is 200
         });

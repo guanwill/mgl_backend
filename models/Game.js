@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let GameSchema = new Schema({
-    title: String,
+    title: {
+        type: String,
+        trim: true,
+        required: true,
+    },
     genre: String,
     platform: String,
     release_date: Date,
@@ -10,6 +14,7 @@ let GameSchema = new Schema({
     rating: Number,
     review: String,
     comments: String,
+    user: String,
     user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 

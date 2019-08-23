@@ -9,28 +9,33 @@ router.get('/', function (req, res, next) {
 });
 
 // route for update game
-router.post('/:game_id/user/:id',
+router.post('/:game_id',
   async function (req, res) {
+    console.log('UPDATE GAME TITLE')
     console.log(req.body);
 
+    // let user_id = req.params.id;
+    let game_id = req.params.game_id;
+    let title = req.body.title;
+
     // Update game
-    await addressConcerns.updateAddress(
-      req.params.id,
-      req.body.billing_address_1,
-      req.body.billing_address_2,
-      req.body.billing_state,
-      parseInt(req.body.billing_postcode),
-      req.body.billing_country,
-      req.body.shipping_address_1,
-      req.body.shipping_address_2,
-      req.body.shipping_state,
-      parseInt(req.body.shipping_postcode),
-      req.body.shipping_country
+    const a = await game.updateGame(
+      // user_id,
+      game_id,
+      title,
+      // genre,
+      // platform,
+      // release_date,
+      // progress,
+      // rating,
+      // review,
+      // comments,
     );
-    ('message', 'Address updated!')
-    res.redirect('/update/' + req.params.id)
+    console.log('aaaaaa');
+    console.log(a);
+    res.send(a);
   }
-);
+)
 
 // route for add game
 router.post('/user/:id',
@@ -42,7 +47,7 @@ router.post('/user/:id',
     let title = req.body.title;
 
     // Update game
-    await game.addGame(
+    const a = await game.addGame(
       user_id,
       title,
       // genre,
@@ -53,7 +58,9 @@ router.post('/user/:id',
       // review,
       // comments,
     );
-    res.send('success');
+    console.log('aaaaaa');
+    console.log(a);
+    res.send(a);
   }
 );
 
