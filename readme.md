@@ -2,8 +2,10 @@
 This app includes APIs for basic auth functionality. Beyond auth functionality, it also has APIs to perform CRUD on user's games.
 
 ## AUTH
-**Register**
-> POST /api/v1/auth/register
+**REGISTER**
+```
+POST /api/v1/auth/register
+```
 
 Body:
 ```
@@ -13,8 +15,10 @@ Body:
 }
 ```
 
-**Login**
-> POST /api/v1/auth/login
+**LOGIN**
+```
+POST /api/v1/auth/login
+```
 
 Body:
 ```
@@ -24,8 +28,10 @@ Body:
 }
 ```
 
-**Forgot Password**
-> POST /api/v1/auth/forgot_password
+**FORGOT PASSWORD**
+```
+POST /api/v1/auth/forgot_password
+```
 
 Body:
 ```
@@ -34,8 +40,10 @@ Body:
 }
 ```
 
-**Resend Verification Email**
-> POST /api/v1/auth/resend_verification_email
+**RESEND VERIFICATION EMAIL**
+```
+POST /api/v1/auth/resend_verification_email
+```
 
 Body:
 ```
@@ -44,8 +52,10 @@ Body:
 }
 ```
 
-**Verify Account**
-> GET /api/v1/auth/verify_account/:token
+**VERIFY ACCOUNT**
+```
+GET /api/v1/auth/verify_account/:token
+```
 
 Params:
 ```
@@ -53,8 +63,10 @@ req.params.token
 ```
 
 ## USER
-**Update User**
-> POST /api/v1/user/:id
+**UPDATE USER**
+```
+POST /api/v1/user/:id
+```
 
 Params:
 ```
@@ -69,8 +81,10 @@ Body:
 }
 ```
 
-**Get Account**
-> GET /api/v1/user/:id
+**GET ACCOUNT**
+```
+GET /api/v1/user/:id
+```
 
 Params:
 ```
@@ -78,8 +92,10 @@ req.params.id
 ```
 
 ## GAMES
-**Add Game**
-> POST /api/v1/games/user/:id
+**ADD GAME**
+```
+POST /api/v1/games/user/:id
+```
 
 Params:
 ```
@@ -93,8 +109,10 @@ Body:
 }
 ```
 
-**Update Game**
-> POST /api/v1/games/:game_id
+**UPDATE GAME**
+```
+POST /api/v1/games/:game_id
+```
 
 Params:
 ```
@@ -108,8 +126,10 @@ Body:
 }
 ```
 
-**Delete Game**
-> DELETE /api/v1/games/:game_id/user/:user_id
+**DELETE GAME**
+```
+DELETE /api/v1/games/:game_id/user/:user_id
+```
 
 Params:
 ```
