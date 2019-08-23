@@ -3,8 +3,6 @@ This app includes APIs for basic auth functionality. Beyond auth functionality, 
 
 ## AUTH
 
----
-
 **REGISTER**
 ```
 POST /api/v1/auth/register
@@ -77,8 +75,6 @@ req.params.token
 
 ## USER
 
----
-
 **UPDATE ACCOUNT**
 ```
 POST /api/v1/user/:id
@@ -112,8 +108,6 @@ req.params.id
 ---
 
 ## GAMES
-
----
 
 **ADD GAME**
 ```
