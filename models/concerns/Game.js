@@ -21,15 +21,12 @@ async function updateGame(
         upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`
     };
     
-    await Game.findOneAndUpdate(filter, update, options)
+    const updatedGame = await Game.findOneAndUpdate(filter, update, options)
 
-    const b = await populateUserGames('5d5d4ff7a46f91945fd2211a')
-    console.log(b);
-
-    return('adsf');
+    return(updatedGame);
 }
 
-async function addGame(user_id, title) {
+async function addGame(user_id, title) { 
     try {
         var query = { title: title, user: user_id },
             update = { title: title },
@@ -41,14 +38,19 @@ async function addGame(user_id, title) {
     }
 }
 
-async function populateUserGames(user_id) {
-    const user = await User.findOne({ _id: user_id }).populate('games');
-    console.log('POPULATE GAMES')
-    console.log(user);
-    console.log(user.games);
+async function deleteGame(game_id, user_id) {
+    try {
+        await Game.remove({ _id: game_id })
+        const deleteGame = await User.update({ _id: user_id }, { $pull: { games: game_id } });
+        return deleteGame;
+        // return
+    } catch (err) {
+        return err
+    }
 }
 
 module.exports = {
     updateGame,
-    addGame
+    addGame,
+    deleteGame
 }

@@ -1,6 +1,13 @@
 const User = require('../User');
 const nodemailer = require('nodemailer');
 
+// get user and user's games
+async function populateUserGames(user_id) {
+    const user = await User.findOne({ _id: user_id }).populate('games');
+    if (user) return user;
+    throw new Error('User not found');
+}
+
 // update name, username and new password if available
 async function updateUser(user_id, name, password) {
     var query = { _id: user_id };
@@ -153,5 +160,6 @@ module.exports = {
     sendVerificationEmail,
     findUserByVerificationToken,
     verifyUser,
+    populateUserGames
 }
 

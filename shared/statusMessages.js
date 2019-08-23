@@ -7,7 +7,12 @@ const statusMessage = {
     verification_email_sent: 'Verification email sent',
     verification_link_expired: 'Link expired. Generate new verification link.',
     account_verified: 'Account verified.',
-    account_updated: 'Account updated'
+    account_updated: 'Account updated',
+    account_retrieved: 'Account retrieved',
+    game_added: 'Game added',
+    add_game_failed: 'Game already exists',
+    update_game_failed: 'Game did not update',
+    delete_game_failed: 'Game does not exist',
 }
 
 module.exports = statusMessage
