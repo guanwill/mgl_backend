@@ -1,5 +1,7 @@
-# Passport boilerplate
+# Passport boilerplate (For MGL)
 This app includes APIs for basic auth functionality. Beyond auth functionality, it also has APIs to perform CRUD on user's games.
+
+
 
 ## AUTH
 
@@ -157,3 +159,6 @@ Params:
 req.params.game_id;
 req.params.user_id;
 ```
+
+## TO DO
+* Logout
