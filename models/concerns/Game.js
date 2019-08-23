@@ -43,7 +43,6 @@ async function deleteGame(game_id, user_id) {
         await Game.remove({ _id: game_id })
         const deleteGame = await User.update({ _id: user_id }, { $pull: { games: game_id } });
         return deleteGame;
-        // return
     } catch (err) {
         return err
     }
