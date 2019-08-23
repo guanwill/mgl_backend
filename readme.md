@@ -2,6 +2,9 @@
 This app includes APIs for basic auth functionality. Beyond auth functionality, it also has APIs to perform CRUD on user's games.
 
 ## AUTH
+
+---
+
 **REGISTER**
 ```
 POST /api/v1/auth/register
@@ -14,6 +17,8 @@ Body:
     "password": "test"
 }
 ```
+
+---
 
 **LOGIN**
 ```
@@ -28,6 +33,8 @@ Body:
 }
 ```
 
+---
+
 **FORGOT PASSWORD**
 ```
 POST /api/v1/auth/forgot_password
@@ -39,6 +46,8 @@ Body:
     "username": "test@test.com",
 }
 ```
+
+---
 
 **RESEND VERIFICATION EMAIL**
 ```
@@ -52,6 +61,8 @@ Body:
 }
 ```
 
+---
+
 **VERIFY ACCOUNT**
 ```
 GET /api/v1/auth/verify_account/:token
@@ -62,8 +73,13 @@ Params:
 req.params.token
 ```
 
+---
+
 ## USER
-**UPDATE USER**
+
+---
+
+**UPDATE ACCOUNT**
 ```
 POST /api/v1/user/:id
 ```
@@ -81,6 +97,8 @@ Body:
 }
 ```
 
+---
+
 **GET ACCOUNT**
 ```
 GET /api/v1/user/:id
@@ -91,7 +109,12 @@ Params:
 req.params.id
 ```
 
+---
+
 ## GAMES
+
+---
+
 **ADD GAME**
 ```
 POST /api/v1/games/user/:id
@@ -109,6 +132,8 @@ Body:
 }
 ```
 
+---
+
 **UPDATE GAME**
 ```
 POST /api/v1/games/:game_id
@@ -125,6 +150,8 @@ Body:
     "title": "newgame",
 }
 ```
+
+---
 
 **DELETE GAME**
 ```
