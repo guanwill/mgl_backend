@@ -8,12 +8,14 @@ const User = require('./models/User');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'secret'
+    secretOrKey: 'secret',
+    passReqToCallback: true,
 },
-    function (jwtPayload, cb) {
+    function (req, jwtPayload, cb) {
         console.log('jwtPayload:', jwtPayload)
         return User.findById(jwtPayload._id)
             .then(user => {
+                req.user = user;
                 return cb(null, user);
             })
             .catch(err => {

@@ -10,6 +10,7 @@ const statusMessage = {
     account_updated: 'Account updated',
     account_retrieved: 'Account retrieved',
     game_added: 'Game added',
+    game_updated: 'Game updated',
     add_game_failed: 'Game already exists',
     update_game_failed: 'Game did not update',
     delete_game_failed: 'Game does not exist',

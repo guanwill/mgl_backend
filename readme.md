@@ -132,11 +132,12 @@ Body:
 
 **UPDATE GAME**
 ```
-POST /api/v1/games/:game_id
+POST /api/v1/games/:game_id/user/:user_id
 ```
 
 Params:
 ```
+req.params.user_id
 req.params.game_id
 ```
 
@@ -162,3 +163,4 @@ req.params.user_id;
 
 ## TO DO
 * Logout
+* Store secret in config

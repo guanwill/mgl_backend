@@ -1,6 +1,20 @@
 const User = require('../User');
 const nodemailer = require('nodemailer');
 
+// get user details
+async function findUser(user_id) {
+    const user = await User.findOne({ _id: user_id })
+    if (user) return user;
+    throw new Error('User not found');
+}
+
+// check user. current user cannot perform actions on/for another user
+async function validateUserActions(target_user_id, current_user_id) {
+    if (target_user_id !== current_user_id) {
+        throw new Error('You do not have permission to perform this action');
+    }
+}
+
 // get user and user's games
 async function populateUserGames(user_id) {
     const user = await User.findOne({ _id: user_id }).populate('games');
@@ -160,6 +174,8 @@ module.exports = {
     sendVerificationEmail,
     findUserByVerificationToken,
     verifyUser,
-    populateUserGames
+    populateUserGames,
+    findUser,
+    validateUserActions
 }
 
