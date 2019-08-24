@@ -124,6 +124,7 @@ async function sendVerificationEmail(username) {
 
         if (doc != null) {
             let subject = `MGL - Verify Account`
+            // todo: the following link needs to be updated to react page which should hit the verify account endpoint
             let message = `Visit this link to verify account: http://localhost:3000/api/v1/auth/verify_account/${verification_token}`
             sendEmail(username, subject, message)
         }
