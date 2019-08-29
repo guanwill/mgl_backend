@@ -1,7 +1,8 @@
 const statusMessage = {
     invalid_username: 'Username exists or is not an email.',
     invalid_email: 'Email does not exist',
-    user_created_pending_verification: 'User created. Pending verification',
+    user_created_pending_verification: 'User pending verification',
+    login_success: 'Login successful',
     login_failed: 'Invalid username or password',
     temp_password: 'Email sent with temporary password',
     verification_email_sent: 'Verification email sent',

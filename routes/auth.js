@@ -13,13 +13,13 @@ router.post("/register", function (req, res) {
         name: req.body.name
     }), req.body.password, function (err, user) {
         if (err) {
-            res.status(400).json({ message: statusMessages.invalid_username })
+            res.json({ message: statusMessages.invalid_username })
         }
 
         passport.authenticate('local')(req, res, async function () {
             await user.save();
             await userConcerns.sendVerificationEmail(req.user.username);
-            res.status(200).json({ message: statusMessages.user_created_pending_verification })
+            res.json({ message: statusMessages.user_created_pending_verification })
         });
     });
 });
@@ -27,21 +27,21 @@ router.post("/register", function (req, res) {
 router.post('/login', function (req, res, next) {
     passport.authenticate('local', { session: false }, (err, user, info) => {
         if (err || !user) {
-            return res.status(400).json({
+            return res.json({
                 message: statusMessages.login_failed,
                 user: user
             });
         }
         req.login(user, { session: false }, (err) => {
             if (err) {
-                res.json(err);
+                return res.json({ message: statusMessages.user_created_pending_verification })
             }
             if (!user.verified) {
-                res.status(200).json({ message: statusMessages.user_created_pending_verification })
+                return res.json({ message: statusMessages.user_created_pending_verification })
             }
             const token = 'secret' // this secret should be from config and more complex
             const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: '1d' }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
-            res.json({ user, accesstoken });
+            res.json({ user, accesstoken, message: statusMessages.login_success });
         });
     })(req, res);
 })
@@ -50,9 +50,9 @@ router.post('/login', function (req, res, next) {
 router.post("/forgot_password", async function (req, res) {
     let doc = await userConcerns.sendTempPassword(req.body.username)
     if (doc != null) {
-        res.status(200).json({ message: statusMessages.temp_password })
+        res.json({ message: statusMessages.temp_password })
     } else {
-        res.status(400).json({ message: statusMessages.invalid_email })
+        res.json({ message: statusMessages.invalid_email })
     }
 });
 
@@ -60,9 +60,9 @@ router.post("/forgot_password", async function (req, res) {
 router.post("/resend_verification_email", async function (req, res) {
     let doc = await userConcerns.sendVerificationEmail(req.body.username)
     if (doc != null) {
-        res.status(200).json({ message: statusMessages.verification_email_sent })
+        res.json({ message: statusMessages.verification_email_sent })
     } else {
-        res.status(400).json({ message: statusMessages.invalid_email })
+        res.json({ message: statusMessages.invalid_email })
     }
 });
 
@@ -71,9 +71,9 @@ router.get("/verify_account/:token", async function (req, res) {
     let verification_token = req.params.token
     let user = await userConcerns.verifyUser(verification_token);
     if (user == 'expired') {
-        res.status(200).json({ message: statusMessages.verification_link_expired })
+        res.json({ message: statusMessages.verification_link_expired })
     } else {
-        res.status(200).json({ message: statusMessages.account_verified })
+        res.json({ message: statusMessages.account_verified })
     }
 });
 

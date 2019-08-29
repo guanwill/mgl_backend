@@ -10,9 +10,9 @@ router.post('/:id',
             const user_id = req.params.id;
             await User.validateUserActions(user_id, req.user.id);
             await User.updateUser(user_id, req.body.name, req.body.password);
-            res.status(200).json({ message: statusMessages.account_updated })
+            res.json({ message: statusMessages.account_updated })
         } catch (err) {
-            res.status(400).json({ message: err.message }) 
+            res.json({ message: err.message }) 
         }
     }
 );
@@ -23,9 +23,9 @@ router.get('/:id',
             const user_id = req.params.id;
             await User.validateUserActions(user_id, req.user.id);
             const userGames = await User.populateUserGames(user_id);
-            res.status(200).json({ message: statusMessages.account_retrieved, data: userGames })
+            res.json({ message: statusMessages.account_retrieved, data: userGames })
         } catch (err) {
-            res.status(400).json({ message: err.message })
+            res.json({ message: err.message })
         }
     }
 )

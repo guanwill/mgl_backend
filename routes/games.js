@@ -32,12 +32,12 @@ router.post('/:game_id/user/:user_id',
       );
   
       if (updateGame) {
-        res.status(200).json({ message: statusMessages.game_updated, data: updateGame })
+        return res.json({ message: statusMessages.game_updated, data: updateGame })
       } else {
-        res.status(200).json({ message: statusMessages.update_game_failed })
+        return res.json({ message: statusMessages.update_game_failed })
       }
     } catch (err) {
-      res.status(400).json({ message: err.message })
+      res.json({ message: err.message })
     }
   }
 )
@@ -65,12 +65,12 @@ router.post('/user/:id',
       );
 
       if (addGame.nModified > 0) {
-        res.status(200).json({ message: statusMessages.game_added })
+        return res.json({ message: statusMessages.game_added })
       } else if (addGame.nModified === 0) {
-        res.status(200).json({ message: statusMessages.add_game_failed })
+        return res.json({ message: statusMessages.add_game_failed })
       }
     } catch (err) {
-      res.status(400).json({ message: err.message })
+      return res.json({ message: err.message })
     }
   }
 );
@@ -88,12 +88,12 @@ router.delete('/:game_id/user/:user_id',
 
       if (deleteGame.nModified > 0) {
         const message = `Game ${game_id} deleted for user ${user_id}`;
-        res.status(200).json({ message: message })
+        res.json({ message: message })
       } else if (deleteGame.nModified === 0) {
-        res.status(200).json({ message: statusMessages.delete_game_failed })
+        res.json({ message: statusMessages.delete_game_failed })
       }
     } catch (err) {
-      res.status(400).json({ message: err.message })
+      res.json({ message: err.message })
     }
   }
 );
