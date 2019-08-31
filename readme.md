@@ -164,3 +164,4 @@ req.params.user_id;
 ## TO DO
 * Logout
 * Store secret in config
+* Use refreshTokens
