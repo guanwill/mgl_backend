@@ -14,13 +14,14 @@ router.post("/register", function (req, res) {
         name: req.body.name
     }), req.body.password, function (err, user) {
         if (err) {
+            console.log('register error: ', err);
             res.json({ message: statusMessages.invalid_username })
         }
 
         passport.authenticate('local')(req, res, async function () {
             await user.save();
             await userConcerns.sendVerificationEmail(req.user.username);
-            res.json({ message: statusMessages.user_created_pending_verification })
+            res.json({ message: statusMessages.user_created_pending_verification, user: user })
         });
     });
 });

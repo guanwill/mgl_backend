@@ -17,21 +17,18 @@ let UserSchema = new Schema({
         required: 'Email address is required',
         dropDups: true,
         validate: [validateEmail, 'Please fill a valid email address'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
     },
     name: String,
     password: String,    
     phone: Number,
     address: [{ type: Schema.Types.ObjectId, ref: 'Address' }],
-    // games: [{ type: Schema.Types.ObjectId, ref: 'Game' }], // user can have an array of games
-    games: [{ type: Schema.ObjectId, ref: 'Game', index: true, unique: true, dropDups: true, index: {unique: true, dropDups: true} }],
+    games: [{ type: Schema.Types.ObjectId, ref: 'Game' }], // user can have an array of games
+    // games: [{ type: Schema.ObjectId, ref: 'Game', index: true, unique: true, dropDups: true, index: {unique: true, dropDups: true} }],
     verified: {type: Boolean, default: false},
     verification_token: String,
     verification_token_created_at: Date
 });
-
-// db.UserSchema.index({ _id: 1, games._id: 1 }, { unique:true, sparse:true })
-UserSchema.index({games: 1}, {unique: true, dropDups: true});
 
 UserSchema.plugin(passportLocalMongoose);
 const User = mongoose.model('User', UserSchema);
