@@ -70,13 +70,17 @@ router.post("/resend_verification_email", async function (req, res) {
 
 // route to verify account
 router.get("/verify_account/:token", async function (req, res) {
-    let verification_token = req.params.token
-    let user = await userConcerns.verifyUser(verification_token);
-    if (user == 'expired') {
-        res.json({ message: statusMessages.verification_link_expired })
-    } else {
-        res.json({ message: statusMessages.account_verified })
-    }
+    try {
+        let verification_token = req.params.token
+        let user = await userConcerns.verifyUser(verification_token);
+        if (user == 'expired') {
+            res.json({ message: statusMessages.verification_link_expired })
+        } else {
+            res.json({ message: statusMessages.account_verified })
+        }
+    } catch (err) {
+        res.json({ message: err.message })
+    }    
 });
 
 module.exports = router;

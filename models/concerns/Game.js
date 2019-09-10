@@ -28,7 +28,7 @@ async function updateGame(
 
 async function addGame(user_id, title) { 
     try {
-        var query = { title: title, user: user_id },
+        let query = { title: title, user: user_id },
             update = { title: title },
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
         const game = await Game.findOneAndUpdate(query, update, options);

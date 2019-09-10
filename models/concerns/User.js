@@ -24,9 +24,9 @@ async function populateUserGames(user_id) {
 
 // update name, username and new password if available
 async function updateUser(user_id, name, password) {
-    var query = { _id: user_id };
-    var update = { name: `${name}` };
-    var options = {
+    let query = { _id: user_id };
+    let update = { name: `${name}` };
+    let options = {
         new: true, // Return the document after updates are applied        
         upsert: true, // Create a document if one isn't found. Required for `setDefaultsOnInsert`
         // setDefaultsOnInsert: true
@@ -105,12 +105,12 @@ async function sendVerificationEmail(username) {
     let verification_token = require('crypto').randomBytes(64).toString('hex');
     let verification_token_created_at = new Date();
 
-    var query = { username: username };
-    var update = {
+    let query = { username: username };
+    let update = {
         verification_token: verification_token,
         verification_token_created_at: verification_token_created_at
     };
-    var options = {
+    let options = {
         new: true, // Return the document after updates are applied        
         upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
     };
@@ -125,7 +125,7 @@ async function sendVerificationEmail(username) {
         if (doc != null) {
             let subject = `MGL - Verify Account`
             // todo: the following link needs to be updated to react page which should hit the verify account endpoint
-            let message = `Visit this link to verify account: http://localhost:3000/api/v1/auth/verify_account/${verification_token}`
+            let message = `Visit this link to verify account: http://localhost:3000/verify/${verification_token}`
             sendEmail(username, subject, message)
         }
         return doc
@@ -140,20 +140,19 @@ async function findUserByVerificationToken(verification_token) {
     });
 }
 
-// find user using reset pw token to reset pw
 async function verifyUser(verification_token) {
     // find user and check if verification token is expired
     let user = await findUserByVerificationToken(verification_token);
     if (new Date().setHours(0, 0, 0, 0) - user[0].verification_token_created_at.setHours(0, 0, 0, 0) > 2) {
-        resolve('expired')
+        return 'expired'
     }
 
     // else verify user
-    var query = { verification_token: verification_token };
-    var update = {
+    let query = { verification_token: verification_token };
+    let update = {
         verified: true
     };
-    var options = {
+    let options = {
         new: true, // Return the document after updates are applied        
         upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
     };
