@@ -73,10 +73,10 @@ router.get("/verify_account/:token", async function (req, res) {
     try {
         let verification_token = req.params.token
         let user = await userConcerns.verifyUser(verification_token);
-        if (user == 'expired') {
+        if (user == 'not found' || user == 'expired') {
             res.json({ message: statusMessages.verification_link_expired })
         } else {
-            res.json({ message: statusMessages.account_verified })
+            res.json({ message: statusMessages.account_verified, user: user })
         }
     } catch (err) {
         res.json({ message: err.message })

@@ -46,21 +46,30 @@ async function updateUser(user_id, name, password) {
 }
 
 async function sendTempPassword(username) {
-    let tempPassword = require('crypto').randomBytes(64).toString('hex').substring(0, 10);
+    
 
-    await User.findOne({ username: username }, async function (err, user) {
-        if (err) {
-            return err
-        }
-        else {
-            await user.setPassword(tempPassword);
-            await user.save();
+    try {
+        let tempPassword = require('crypto').randomBytes(64).toString('hex').substring(0, 10);
+        let user = await User.findOne({ username: username })
+        await user.setPassword(tempPassword);
+        await user.save();
 
-            let subject = `MGL - Temp Password`;
-            let message = `Your temp password is: ${tempPassword}`;
-            return await sendEmail(username, subject, message)
-        }
-    });
+        let subject = `MGL - Temp Password`;
+        let message = `Your temp password is: ${tempPassword}`;
+        await sendEmail(username, subject, message)
+        return user
+    } catch (error) {
+        return error.message
+    }
+
+    // await User.findOne({ username: username }, async function (err, user) {
+    //     if (err) {
+    //         return err
+    //     }
+    //     else {
+            
+    //     }
+    // });
 }
 
 async function sendEmail(username, subject, message) {
@@ -115,35 +124,43 @@ async function sendVerificationEmail(username) {
         upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
     };
 
-    User.findOneAndUpdate(query, update, options, function (error, doc) {
-        if (error) {
-            console.log(error)
-            return new Error('Unable to add/edit verification token')
-        }
-        console.log(doc)
+    try {
+        const user = await User.findOneAndUpdate(query, update, options)
 
-        if (doc != null) {
+        if (user != null) {
             let subject = `MGL - Verify Account`
             // todo: the following link needs to be updated to react page which should hit the verify account endpoint
             let message = `Visit this link to verify account: http://localhost:3000/verify/${verification_token}`
-            sendEmail(username, subject, message)
-        }
-        return doc
-    });
+            await sendEmail(username, subject, message)
+            return user;
+        }    
+    } catch (error) {
+        return error.message
+    }
 }
 
 // find user using verification token
 async function findUserByVerificationToken(verification_token) {
-    await User.findOne({ verification_token: verification_token }, function (err, doc) {
-        if (err) { return err }
-        else { return doc }
+    const user = await User.findOne({ verification_token: verification_token }, function (err, doc) {
+        if (err) { 
+            return err 
+        }
+        else { 
+            return doc 
+        }
     });
+    return user
 }
 
 async function verifyUser(verification_token) {
     // find user and check if verification token is expired
     let user = await findUserByVerificationToken(verification_token);
-    if (new Date().setHours(0, 0, 0, 0) - user[0].verification_token_created_at.setHours(0, 0, 0, 0) > 2) {
+
+    if (!user) {
+        return 'not found'
+    }
+
+    if (new Date().setHours(0, 0, 0, 0) - user.verification_token_created_at.setHours(0, 0, 0, 0) > 2) {
         return 'expired'
     }
 
@@ -157,14 +174,23 @@ async function verifyUser(verification_token) {
         upsert: false, // Create a document if one isn't found. Required for `setDefaultsOnInsert`            
     };
 
-    User.findOneAndUpdate(query, update, options, function (error, doc) {
-        if (error) {
-            console.log(error)
-            return new Error('Unable to add/edit verification token')
-        }
-        console.log(doc)
-        return doc
-    });
+    try {
+        const user = await User.findOneAndUpdate(query, update, options)
+        return user;
+    } catch (error) {
+        console.log(error)
+        return new Error('Unable to add/edit verification token')
+    }
+    
+
+    // await User.findOneAndUpdate(query, update, options, function (error, doc) {
+    //     if (error) {
+    //         console.log(error)
+    //         return new Error('Unable to add/edit verification token')
+    //     }
+    //     console.log(doc)
+    //     return doc
+    // });
 }
 
 
