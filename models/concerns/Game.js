@@ -4,17 +4,24 @@ const User = require('../User');
 async function updateGame(
     game_id,
     title,
-    // genre,
-    // platform,
-    // release_date,
-    // progress,
-    // rating,
-    // review,
-    // comments,
+    genre,
+    platform,
+    release_date,
+    status,
+    rating,
+    review,
+    comments,
 ) {
     const filter = { _id: game_id };
     let update = {
-        title: title
+        title,
+        genre,
+        platform,
+        release_date,
+        status,
+        rating,
+        review,
+        comments,
     };
     let options = {
         new: true, // Return the document after updates are applied        
@@ -26,10 +33,29 @@ async function updateGame(
     return(updatedGame);
 }
 
-async function addGame(user_id, title) { 
+async function addGame(
+    user_id,
+    title,
+    genre,
+    platform,
+    release_date,
+    status,
+    rating,
+    review,
+    comments,    
+) { 
     try {
         let query = { title: title, user: user_id },
-            update = { title: title },
+            update = { 
+                title,
+                genre,
+                platform,
+                release_date,
+                status,
+                rating,
+                review,
+                comments, 
+            },
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
         const game = await Game.findOneAndUpdate(query, update, options);
         return await User.updateOne({ _id: user_id }, { $addToSet: { games: game._id } });

@@ -12,27 +12,37 @@ router.get('/', function (req, res, next) {
 // route for update game
 router.post('/:game_id/user/:user_id',
   async function (req, res) {
+
     const user_id = req.params.user_id;
-    const game_id = req.params.game_id;
-    const title = req.body.title;
-    
+
     try {
       await User.validateUserActions(user_id, req.user.id);
+ 
+      const game_id = req.params.game_id;
+      const title = req.body.title;
+      const genre = req.body.genre;
+      const platform = req.body.platform;
+      const release_date = req.body.release_date;
+      const status = req.body.status;
+      const rating = req.body.rating;
+      const review = req.body.review;
+      const comments = req.body.comments; 
+
       const updateGame = await game.updateGame(
         // user_id,
         game_id,
         title,
-        // genre,
-        // platform,
-        // release_date,
-        // progress,
-        // rating,
-        // review,
-        // comments,
+        genre,
+        platform,
+        release_date,
+        status,
+        rating,
+        review,
+        comments,
       );
   
       if (updateGame) {
-        return res.json({ message: statusMessages.game_updated, data: updateGame })
+        return res.json({ message: statusMessages.game_updated, game: updateGame })
       } else {
         return res.json({ message: statusMessages.update_game_failed })
       }
@@ -45,23 +55,32 @@ router.post('/:game_id/user/:user_id',
 // route for add game
 router.post('/user/:id',
   async function (req, res) {
+
     let user_id = req.params.id;
-    let title = req.body.title;
 
     try {
       await User.validateUserActions(user_id, req.user.id);
+      
+      let title = req.body.title;
+      let genre = req.body.genre;
+      let platform = req.body.platform;
+      let release_date = req.body.release_date;
+      let status = req.body.status;
+      let rating = req.body.rating;
+      let review = req.body.review;
+      let comments = req.body.comments;  
 
       // add game
       const addGame = await game.addGame(
         user_id,
         title,
-        // genre,
-        // platform,
-        // release_date,
-        // progress,
-        // rating,
-        // review,
-        // comments,
+        genre,
+        platform,
+        release_date,
+        status,
+        rating,
+        review,
+        comments,
       );
 
       if (addGame.nModified > 0) {
@@ -88,7 +107,7 @@ router.delete('/:game_id/user/:user_id',
 
       if (deleteGame.nModified > 0) {
         const message = `Game ${game_id} deleted for user ${user_id}`;
-        res.json({ message: message })
+        res.json({ message: message, game: game_id })
       } else if (deleteGame.nModified === 0) {
         res.json({ message: statusMessages.delete_game_failed })
       }

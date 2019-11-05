@@ -10,7 +10,7 @@ let GameSchema = new Schema({
     genre: String,
     platform: String,
     release_date: Date,
-    progress: String,
+    status: String,
     rating: Number,
     review: String,
     comments: String,
