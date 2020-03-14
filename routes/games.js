@@ -1,4 +1,6 @@
 const express = require('express');
+const axios = require('axios');
+const moment = require('moment');
 const router = express.Router();
 const game = require('../models/concerns/Game')
 const User = require('../models/concerns/User');
@@ -8,6 +10,23 @@ const statusMessages = require('../shared/statusMessages');
 router.get('/', function (req, res, next) {
   res.send('games');
 });
+
+// route to call giantbomb api to get upcoming games
+router.get('/latest_games', 
+  async function (req, res, next) {
+    try {
+      // SET API KEY TO ENV VAR
+      const gbApiUrl = 'https://www.giantbomb.com/api/games/?api_key=cf71909f53e1497132eb781d7aab4d0936bfb352'
+      const paramsUrl = `&&sort=original_release_date:desc&format=json&filter=original_release_date:2016-03-14|${moment(new Date()).format("YYYY/MM/DD")}&limit=10`
+      const uri = gbApiUrl + paramsUrl;
+
+      const response = await axios.get(uri);
+      return res.json(response.data)
+    } catch (err) {
+      res.json({ message: err.message })
+    }
+  }
+);
 
 // route for update game
 router.post('/:game_id/user/:user_id',

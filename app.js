@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const gamesRouter = require('./routes/games');
+const giantBombGamesRouter = require('./routes/giantBombGames');
 require('./passport');
 require('./db');
 
@@ -32,6 +33,8 @@ app.use('/', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
+app.use('/game_info', giantBombGamesRouter); // requires authentication/token to access this route
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
