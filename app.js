@@ -33,7 +33,7 @@ app.use('/', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
-app.use('/game_info', giantBombGamesRouter); // requires authentication/token to access this route
+app.use('/game_info', giantBombGamesRouter);
 
 
 // catch 404 and forward to error handler
