@@ -26,7 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000' // todo: add frontend url once deployed
+}));
 
 // Routes
 app.use('/', indexRouter);
@@ -34,7 +36,6 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
 app.use('/game_info', giantBombGamesRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
