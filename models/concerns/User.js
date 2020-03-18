@@ -160,7 +160,8 @@ async function verifyUser(verification_token) {
         return 'not found'
     }
 
-    if (new Date().setHours(0, 0, 0, 0) - user.verification_token_created_at.setHours(0, 0, 0, 0) > 2) {
+    if (new Date().setHours(0, 0, 0, 0) - user.verification_token_created_at.setHours(0, 0, 0, 0) > 86400000) {
+        // 86400000 refers to a difference of 1 day. It will expire if greater or longer than 1 day
         return 'expired'
     }
 
