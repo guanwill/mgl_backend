@@ -1,4 +1,5 @@
 const passport = require('passport');
+const config = require('./config.json');
 const LocalStrategy = require('passport-local').Strategy; // to use username and password for authentication
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
@@ -8,7 +9,7 @@ const User = require('./models/User');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.use(new JWTStrategy({
     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'secret',
+    secretOrKey: config.passport_secret,
     passReqToCallback: true,
 },
     function (req, jwtPayload, cb) {

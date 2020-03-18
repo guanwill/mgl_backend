@@ -1,0 +1,6 @@
+{
+    "mongo_hostname": "localhost",
+    "passport_secret": "sd23gu3jd2#$@E$DQW",
+    "giantbomb_api_key": "cf71909f53e1497132eb781d7aab4d0936bfb352",
+    "access_token_expire_in": "1d"
+}
