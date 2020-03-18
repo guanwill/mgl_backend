@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('../config.json')
+const config = require('../config')
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const moment = require('moment');
@@ -42,8 +42,8 @@ router.post('/login', function (req, res, next) {
             if (!user.verified) {
                 return res.json({ message: statusMessages.user_created_pending_verification })
             }
-            const token = 'secret' // this secret should be from config and more complex
-            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: config.access_token_expire_in }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
+            const token = config.passport_secret // this secret should be from config and more complex
+            const accesstoken = jwt.sign(user.toJSON(), token, { expiresIn: config.access_token_expires_in }); // for now, if expire, we redirect to login page. todo: use refreshtoken to get new token   
             res.json({ user, accesstoken, message: statusMessages.login_success });
         });
     })(req, res);

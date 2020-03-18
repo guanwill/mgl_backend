@@ -116,6 +116,7 @@ async function sendVerificationEmail(username) {
 
     let query = { username: username };
     let update = {
+        verified: true, // remove this when want to implement/activate email verification
         verification_token: verification_token,
         verification_token_created_at: verification_token_created_at
     };
@@ -131,7 +132,8 @@ async function sendVerificationEmail(username) {
             let subject = `MGL - Verify Account`
             // todo: the following link needs to be updated to react page which should hit the verify account endpoint
             let message = `Visit this link to verify account: http://localhost:3000/verify/${verification_token}`
-            await sendEmail(username, subject, message)
+            // todo: activate email verification. already working and tested with fakesmtp
+            // await sendEmail(username, subject, message)
             return user;
         }    
     } catch (error) {

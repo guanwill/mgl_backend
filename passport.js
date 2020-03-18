@@ -1,5 +1,5 @@
 const passport = require('passport');
-const config = require('./config.json');
+const config = require('./config');
 const LocalStrategy = require('passport-local').Strategy; // to use username and password for authentication
 const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
