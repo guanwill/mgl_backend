@@ -16,3 +16,6 @@ Technologies used:
 * Nodemailer 5.0.0
 * Connect-ensure-login 0.1.1
 * Connect-flash 0.1.1
+
+Notes:
+* Has extended to include User's CRUD of choice APIs
