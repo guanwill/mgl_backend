@@ -12,6 +12,7 @@ const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const gamesRouter = require('./routes/games');
 const giantBombGamesRouter = require('./routes/giantBombGames');
+const config = require('./config')
 require('./passport');
 require('./db');
 
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(cors({
-  origin: 'https://abh-react.herokuapp.com' || 'http://localhost:3000'
+  origin: config.abh_url  
 }));
 
 // Routes
