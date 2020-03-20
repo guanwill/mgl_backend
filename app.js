@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(cors({
-  origin: 'http://localhost:3000' // todo: add frontend url once deployed
+  origin: 'https://abh-react.herokuapp.com' || 'http://localhost:3000'
 }));
 
 // Routes
