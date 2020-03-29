@@ -45,7 +45,7 @@ async function addGame(
     comments,    
 ) { 
     try {
-        let query = { title: title, user: user_id },
+        let query = { title: title, user: user_id };
             update = { 
                 title,
                 genre,
@@ -57,8 +57,13 @@ async function addGame(
                 comments, 
             },
             options = { upsert: true, new: true, setDefaultsOnInsert: true };
-        const game = await Game.findOneAndUpdate(query, update, options);
-        return await User.updateOne({ _id: user_id }, { $addToSet: { games: game._id } });
+        const gameToAdd = await Game.findOne(query)
+        if (!gameToAdd) {
+            const game = await Game.findOneAndUpdate(query, update, options);
+            return await User.updateOne({ _id: user_id }, { $addToSet: { games: game._id } });
+        } else {
+            return {nModified: 0}
+        }
     } catch (err) {
         return err
     }
