@@ -1,6 +1,6 @@
 const { buildSchema } = require('graphql');
 
-const latestGamesSchema = buildSchema(`
+const schema = buildSchema(`
   type Image {
     icon_url: String,
     medium_url: String,
@@ -9,7 +9,7 @@ const latestGamesSchema = buildSchema(`
   type Platform {
     name: String
   },
-  type LatestGame {
+  type GamesResponse {
     id: String!,
     name: String,
     image: Image,
@@ -19,19 +19,9 @@ const latestGamesSchema = buildSchema(`
     deck: String
   },
   type Query {
-    latestGames: [LatestGame]    
+    latestGames: [GamesResponse],
+    searchGames(query: String!): [GamesResponse]
   }
 `);
 
-//  const latestGamesSchema = buildSchema(`
-//   type Product {
-//     name: String,
-//     id: Int
-//   },
-//   type Query {
-//     hello: String,
-//     products: [Product]
-//   }
-// `);
-
-module.exports = latestGamesSchema;
+module.exports = schema;

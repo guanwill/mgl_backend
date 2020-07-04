@@ -18,8 +18,8 @@ require('./db');
 
 // Graphql
 const graphqlHTTP = require('express-graphql');
-const latestGamesSchema = require('./graphql/schema/latestGames')
-const latestGamesRoot = require('./graphql/resolvers/latestGames')
+const schema = require('./graphql/schema');
+const root = require('./graphql/root');
 
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -43,12 +43,12 @@ app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRo
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
 app.use('/game_info', giantBombGamesRouter);
 
-
+// Note: One GraphQL route consisting of many queries that represents different endpoints
 app.use(
-  '/graphql',
+  '/mgl_graphql',
   graphqlHTTP({
-    schema: latestGamesSchema,
-    rootValue: latestGamesRoot,
+    schema: schema,
+    rootValue: root,
     graphiql: true
   })
 );
