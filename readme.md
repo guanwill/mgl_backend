@@ -2,7 +2,6 @@
 This app includes APIs for basic auth functionality. Beyond auth functionality, it also has APIs to perform CRUD on user's games.
 
 
-
 ## AUTH
 
 **REGISTER**
@@ -161,7 +160,61 @@ req.params.game_id;
 req.params.user_id;
 ```
 
-## TO DO
-* Logout
-* Store secret in config
-* Use refreshTokens
+---
+
+**LATEST GAMES**
+```
+/mgl_graphql
+```
+
+Query:
+```
+{
+  latestGames {
+    id
+    name,
+    image {
+      icon_url
+      medium_url
+      screen_url
+    }
+    site_detail_url,
+    original_release_date,
+    platforms {
+      name
+    }
+    deck
+  }
+}
+```
+
+**SEARCH GAMES**
+```
+/mgl_graphql
+```
+
+Arguments:
+```
+query: String!
+```
+
+Query:
+```
+query Query($query: String!) {
+  searchGames(query: $query) {
+    id
+    name,
+    image {
+      icon_url
+      medium_url
+      screen_url
+    }
+    site_detail_url,
+    original_release_date,
+    platforms {
+      name
+    }
+    deck
+  }
+}
+```

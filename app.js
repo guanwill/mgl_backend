@@ -41,7 +41,7 @@ app.use('/', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
-app.use('/game_info', giantBombGamesRouter);
+// app.use('/game_info', giantBombGamesRouter); // obsolete due to graphql ep
 
 // Note: One GraphQL route consisting of many queries that represents different endpoints
 app.use(
