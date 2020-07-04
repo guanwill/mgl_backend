@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
 const gamesRouter = require('./routes/games');
+const publicRouter = require('./routes/public');
 const giantBombGamesRouter = require('./routes/giantBombGames');
 const config = require('./config')
 require('./passport');
@@ -33,7 +34,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
 app.use(cors({
-  origin: config.abh_url  
+  origin: config.abh_url
 }));
 
 // Routes
@@ -41,6 +42,7 @@ app.use('/', indexRouter);
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', passport.authenticate('jwt', { session: false }), userRouter); // requires authentication/token to access this route
 app.use('/api/v1/games', passport.authenticate('jwt', { session: false }), gamesRouter); // requires authentication/token to access this route
+app.use('/api/v1/public', publicRouter);
 // app.use('/game_info', giantBombGamesRouter); // obsolete due to graphql ep
 
 // Note: One GraphQL route consisting of many queries that represents different endpoints
