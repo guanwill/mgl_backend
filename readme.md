@@ -164,7 +164,7 @@ req.params.user_id;
 
 **LATEST GAMES**
 ```
-/mgl_graphql
+POST /mgl_graphql
 ```
 
 Query:
@@ -183,14 +183,25 @@ Query:
     platforms {
       name
     }
-    deck
+    deck,
+    pictures {
+      original_url
+    }
+    moreInfo {
+      genres {
+        name
+      }
+      developers {
+        name
+      }
+    }
   }
 }
 ```
 
 **SEARCH GAMES**
 ```
-/mgl_graphql
+POST /mgl_graphql
 ```
 
 Arguments:
@@ -202,7 +213,8 @@ Query:
 ```
 query Query($query: String!) {
   searchGames(query: $query) {
-    id
+    id,
+    guid,
     name,
     image {
       icon_url
@@ -214,7 +226,18 @@ query Query($query: String!) {
     platforms {
       name
     }
-    deck
+    deck,
+    pictures {
+      original_url
+    },
+    moreInfo {
+      genres {
+        name
+      },
+      developers {
+        name
+      }
+    }
   }
 }
 ```
