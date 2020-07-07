@@ -18,9 +18,10 @@ require('./passport');
 require('./db');
 
 // Graphql
+const { makeExecutableSchema } = require("graphql-tools");
 const graphqlHTTP = require('express-graphql');
-const schema = require('./graphql/schema');
-const root = require('./graphql/root');
+const typeDefs = require('./graphql/typeDefs');
+const resolvers = require('./graphql/resolvers');
 
 const app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -46,11 +47,16 @@ app.use('/api/v1/public', publicRouter);
 // app.use('/game_info', giantBombGamesRouter); // obsolete due to graphql ep
 
 // Note: One GraphQL route consisting of many queries that represents different endpoints
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
 app.use(
   '/mgl_graphql',
   graphqlHTTP({
     schema: schema,
-    rootValue: root,
+    // rootValue: root, // ignore this if using makeExecutableSchema
     graphiql: true
   })
 );
