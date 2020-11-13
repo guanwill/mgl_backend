@@ -34,9 +34,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
-app.use(cors({
-  origin: config.abh_url
-}));
+// app.use(cors({
+//   origin: config.abh_url
+// }));
 
 // Routes
 app.use('/', indexRouter);
